@@ -1,0 +1,9 @@
+---
+- name: Install Cribl Edge
+  ansible.builtin.shell: curl '{{ cribl_edge_leader }}/init/install-edge.sh?group={{ cribl_edge_fleet }}&token={{ crible_edge_token }}&user={{ cribl_edge_user }}&user_group={{ cribl_edge_group }}&install_dir={{ cribl_edge_install_dir }}' | bash -
+
+- name: Ensure Cribl Edge is enabled and started
+  ansible.builtin.systemd:
+    name: cribl-edge
+    enabled: yes
+    state: started

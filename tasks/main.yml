@@ -1,1 +1,18 @@
 ---
+- name: Include OS Family Variables
+  ansible.builtin.include_vars: '{{ ansible_os_family }}.yml'
+  tags: always
+
+- name: Install Cribl Edge | Linux
+  ansible.builtin.include_tasks: install_cribl_linux.yml
+  when:
+    - ansible_os_family == 'Debian' or
+      ansible_os_family == 'RedHat'
+  tags: install
+
+- name: Uninstall Cribl Edge | Linux
+  ansible.builtin.include_tasks: uninstall_cribl_linux.yml
+  when:
+    - ansible_os_family == 'Debian' or
+      ansible_os_family == 'RedHat'
+  tags: uninstall

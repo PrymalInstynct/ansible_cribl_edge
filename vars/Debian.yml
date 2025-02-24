@@ -1,0 +1,4 @@
+---
+cribl_edge_dependencies:
+  - curl
+  - gnupg
