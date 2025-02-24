@@ -1,0 +1,27 @@
+---
+galaxy_info:
+  role_name: ansible_cribl_edge
+  author: Chad Zimmerman
+  description: An Ansible Role that will Install Cribl Edge
+  company: ''
+  license: MIT
+  min_ansible_version: "2.10"
+  platforms:
+    - name: EL
+      versions:
+        - "all"
+    - name: Fedora
+      versions:
+        - "all"
+    - name: Debian
+      versions:
+        - "all"
+    - name: Ubuntu
+      versions:
+        - "all"
+  galaxy_tags:
+    - linux
+
+dependencies: []
+
+collections: []
