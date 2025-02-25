@@ -1,6 +1,11 @@
 ---
-- name: Install Cribl Edge
+- name: Install Cribl Edge | CDN
   ansible.builtin.shell: curl '{{ cribl_edge_leader }}/init/install-edge.sh?group={{ cribl_edge_fleet }}&token={{ crible_edge_token }}&user={{ cribl_edge_user }}&user_group={{ cribl_edge_group }}&install_dir={{ cribl_edge_install_dir }}' | bash -
+  when: not cribl_edge_airgapped | bool
+
+- name: Install Cribl Edge | Air Gapped
+  ansible.builtin.shell: curl '{{ cribl_edge_leader }}/init/install-edge.sh?group={{ cribl_edge_fleet }}&token={{ crible_edge_token }}&download_url={{ cribl_edge_airgapped_location }}/cribl-{{ cribl_edge_version }}-{{ cribl_edge_os }}.tgz&user={{ cribl_edge_user }}&user_group={{ cribl_edge_group }}&install_dir={{ cribl_edge_install_dir }}' | bash -
+  when: cribl_edge_airgapped | bool
 
 - name: Ensure Cribl Edge is enabled and started
   ansible.builtin.systemd:
