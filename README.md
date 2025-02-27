@@ -44,7 +44,6 @@ linux:
     cribl_edge_leader: https://cribl-leader.local.domain
     cribl_edge_leader_communication: cribl-leadercomm.local.domain
     cribl_edge_fleet: linux
-    cribl_edge_token: "ABCDEF01-1234-5678-ABCD-ABCDEF012345"
   hosts:
     rhelvm01.local.domain:
       ansible_hosts: 10.10.1.20
