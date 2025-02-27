@@ -1,0 +1,6 @@
+---
+- name: Configure Cribl Edge
+  hosts: all
+  become: true
+  roles:
+    - { role: ansible_cribl_edge }

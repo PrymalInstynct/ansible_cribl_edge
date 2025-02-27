@@ -1,0 +1,48 @@
+---
+- name: Download Cribl Edge Install Script
+  ansible.builtin.get_url:
+    url: '{{ cribl_edge_leader }}/init/install-edge.sh'
+    dest: /tmp/install-edge.sh
+    mode: '0755'
+    validate_certs: false
+
+- name: Configure Cribl Edge Install Script
+  ansible.builtin.lineinfile:
+    path: /tmp/install-edge.sh
+    regexp: '{{ cribl_config.regexp }}'
+    line: '{{ cribl_config.line }}'
+    backrefs: true
+  loop:
+    - { regexp: '^(.*)\s&&\sCRIBL_MASTER_HOST=.*', line: '\1 && CRIBL_MASTER_HOST="{{ cribl_edge_leader_communication }}"'}
+    - { regexp: '^(.*)\s&&\sCRIBL_AUTH_TOKEN=.*', line: '\1 && CRIBL_AUTH_TOKEN="{{ cribl_edge_token }}"'}
+    - { regexp: '^(.*)\s&&\sCRIBL_MASTER_TLS_DISABLED=.*', line: '\1 && CRIBL_MASTER_TLS_DISABLED="{{ cribl_edge_leader_tls_disabled }}"'}
+    - { regexp: '^(.*)\s&&\sCRIBL_MASTER_PORT=.*', line: '\1 && CRIBL_MASTER_PORT="{{ cribl_edge_leader_comm_port }}"'}
+    - { regexp: '^(.*)\s&&\sCRIBL_GROUP=.*', line: '\1 && CRIBL_GROUP="{{ cribl_edge_fleet }}"'}
+    - { regexp: '^(.*)\s&&\sCRIBL_INSTALL_DIR=.*', line: '\1 && CRIBL_INSTALL_DIR="{{ cribl_edge_install_dir }}"'}
+  loop_control:
+    loop_var: cribl_config
+
+- name: Configure Cribl Edge Install Script | Air-Gap
+  ansible.builtin.lineinfile:
+    path: /tmp/install-edge.sh
+    regexp: '^(.*)\s&&\sCRIBL_DOWNLOAD_URL=.*'
+    line: '\1 && CRIBL_DOWNLOAD_URL="{{ cribl_edge_airgapped_location }}/cribl-{{ cribl_edge_version }}-{{ cribl_edge_os }}.tgz"'
+    backrefs: true
+  when: cribl_edge_airgapped | bool
+
+- name: Install Cribl Edge
+  ansible.builtin.command:
+    cmd: bash /tmp/install-edge.sh
+  register: install_status
+  failed_when: install_status.rc >= 1
+
+- name: Ensure Cribl Edge is enabled and started
+  ansible.builtin.systemd:
+    name: cribl-edge
+    enabled: true
+    state: started
+
+- name: Cleanup Cribl Edge Install Script
+  ansible.builtin.file:
+    path: /tmp/install-edge.sh
+    state: absent

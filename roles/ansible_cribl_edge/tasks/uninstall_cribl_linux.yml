@@ -11,7 +11,18 @@
     state: absent
 
 - name: Remove Cribl Edge data directory
-  ansible.builtin.shell: rm -rf /opt/cribl
+  ansible.builtin.file:
+    path: /opt/cribl
+    state: absent
+
+- name: Remove Cribl Edge Systemd Unit File
+  ansible.builtin.file:
+    path: /etc/systemd/system/cribl-edge.service
+    state: absent
+
+- name: Reload Systemd Daemons
+  ansible.builtin.systemd:
+    daemon_reload: true
 
 - name: Remove cribl user
   ansible.builtin.user:
