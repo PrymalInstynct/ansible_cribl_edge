@@ -46,7 +46,7 @@ linux:
       ansible_hosts: 10.10.1.20
       cribl_edge_airgapped: false
     rhelvm02.local.domain:
-      ansible_hosts: 10.10.1.20
+      ansible_hosts: 10.10.1.30
       cribl_edge_airgapped: true
 ```
 
