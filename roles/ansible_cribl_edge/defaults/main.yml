@@ -8,7 +8,7 @@ cribl_edge_leader_communication: cribl-leadercomm.local.domain
 cribl_edge_leader_comm_port: '4200'
 cribl_edge_leader_tls_disabled: 'true'
 cribl_edge_fleet: default_fleet
-cribl_edge_token: tokenTokentoken
+cribl_edge_token: '{{ vault_cribl_edge_token }}'
 cribl_edge_user: cribl
 cribl_edge_group: cribl
 cribl_edge_install_dir: /opt/cribl

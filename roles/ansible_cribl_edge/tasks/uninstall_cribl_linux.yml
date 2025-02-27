@@ -4,16 +4,19 @@
     name: cribl-edge
     state: stopped
     enabled: no
+  ignore_errors: true # If the package is not installed, this will fail
 
 - name: Uninstall Cribl Edge
   ansible.builtin.package:
     name: cribl-edge
     state: absent
+  ignore_errors: true # If the package is not installed, this will fail
 
 - name: Remove Cribl Edge data directory
   ansible.builtin.file:
     path: /opt/cribl
     state: absent
+    recurse: yes
 
 - name: Remove Cribl Edge Systemd Unit File
   ansible.builtin.file:
@@ -26,12 +29,13 @@
 
 - name: Remove cribl user
   ansible.builtin.user:
-    name: cribl
+    name: "{{ cribl_edge_user }}"
     state: absent
-    remove: yes
+    remove: true
+  when: cribl_edge_user != 'root'
 
 - name: Remove cribl group
   ansible.builtin.group:
-    name: cribl
+    name: "{{ cribl_edge_group }}"
     state: absent
-
+  when: cribl_edge_user != 'root'

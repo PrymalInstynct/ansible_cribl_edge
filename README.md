@@ -23,10 +23,14 @@ Ansible Role to deploy Cribl Edge
 | cribl_edge_leader_comm_port     | 4200                                | Cribl Leader Communication Port                                                    |
 | cribl_edge_leader_tls_disabled  | true                                | Cribl Leader Communication TLS Enabled/Disabled                                    |
 | cribl_edge_fleet                | default_fleet                       | Name of Fleet to put the Edge nodes into                                           |
-| cribl_edge_token                | tokenTokentoken                     | Token set during Cribl Leader Installation                                         |
+| cribl_edge_token                | {{ vault_cribl_edge_token }}        | Token set during Cribl Leader Installation                                         |
 | cribl_edge_user                 | cribl                               | Username to run Cribl Edge as                                                      |
 | cribl_edge_group                | cribl                               | Group of Cribl user that Edge runs as                                              |
 | cribl_edge_install_dir          | /opt/cribl                          | Location to install Cribl Edge                                                     |
+
+### Vaulted Variables
+
+- `vault_cribl_edge_token` can be found in vars/vault.yml and should be encrypted with ansible-vault before being used
 
 ## Inventory Example
 
@@ -63,13 +67,13 @@ linux:
 
 ## Role Usage & Tags
 
-- Install and Configure Cribl Edge
+- The `install` tag is used to install and configure Cribl Edge application
 
 ```bash
 ansible-playbook -i inventory.yml configure-cribl-edge.yml --tag install -K
 ```
 
-- Uninstall Cribl Edge
+- The `uninstall` tag is used to uninstall Cribl Edge application including removing any created users
 
 ```bash
 ansible-playbook -i inventory.yml configure-cribl-edge.yml --tag uninstall -K
