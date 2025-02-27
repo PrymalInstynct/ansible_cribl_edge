@@ -4,7 +4,7 @@
     name: cribl-edge
     state: stopped
     enabled: no
-  ignore_errors: true # If the package is not installed, this will fail
+  ignore_errors: true # If the service is not present, this will fail
 
 - name: Uninstall Cribl Edge
   ansible.builtin.package:
@@ -14,7 +14,7 @@
 
 - name: Remove Cribl Edge data directory
   ansible.builtin.file:
-    path: /opt/cribl
+    path: '{{ cribl_edge_install_dir }}'
     state: absent
     recurse: yes
 
